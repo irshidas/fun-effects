@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sparkle Button</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: Arial, sans-serif;
+      margin: 0;
+    }
+
+    .sparkle-btn {
+      padding: 15px 40px;
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: 2px solid white;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sparkle-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .sparkle-btn:active {
+      transform: scale(0.95);
+    }
+
+    .sparkle {
+      position: fixed;
+      pointer-events: none;
+      font-size: 24px;
+      animation: sparkle-animation 0.8s ease-out forwards;
+    }
+
+    @keyframes sparkle-animation {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--tx), var(--ty)) scale(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <button class="sparkle-btn">✨ Click Me! ✨</button>
+
+  <script>
+    const button = document.querySelector('.sparkle-btn');
+
+    button.addEventListener('click', (e) => {
+      const rect = button.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      // Create 8 sparkles in a burst
+      for (let i = 0; i < 8; i++) {
+        const angle = (i / 8) * Math.PI * 2;
+        const velocity = 150;
+        const tx = Math.cos(angle) * velocity;
+        const ty = Math.sin(angle) * velocity;
+
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.textContent = '✨';
+        sparkle.style.left = centerX + 'px';
+        sparkle.style.top = centerY + 'px';
+        sparkle.style.setProperty('--tx', tx + 'px');
+        sparkle.style.setProperty('--ty', ty + 'px');
+
+        document.body.appendChild(sparkle);
+
+        // Remove after animation
+        setTimeout(() => sparkle.remove(), 800);
+      }
+    });
+  </script>
+</body>
+</html>
